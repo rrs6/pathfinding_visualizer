@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/global.css">
+    <script src="/js/main.js" type="module" defer></script>
+    <title>Pathfinding Visualizer - BFS and DFS</title>
+</head>
+<body>
+    <main class="content" id="content">
+        <ul class="list-button">
+            <li class="item-button">
+                <button class="buttons" id="target">To</button>
+            </li>
+            <li class="item-button">
+                <button class="buttons" id="start">From</button>
+            </li>
+            <li class="item-button">
+                <button class="buttons" id="dfs">DFS</button>
+            </li>
+            <li class="item-button">
+                <button class="buttons" id="bfs">BFS</button>
+            </li>
+            <li class="item-button">
+                <button class="buttons" id="clear">Reset</button>
+            </li>
+        </ul>
+        <div class="numberCell">
+            <label class="numCells" for="numCells">N. cells in the grid</label>
+            <input id="numCells" type="range" max="100" min="8" value="54">
+        </div>
+    </main>
+</body>
+</html>

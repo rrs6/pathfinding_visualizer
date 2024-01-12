@@ -1,0 +1,1 @@
+export const directions = [{v: 1, h:0}, {v: 0, h:1}, {v: -1, h:0}, {v: 0, h: -1}];
