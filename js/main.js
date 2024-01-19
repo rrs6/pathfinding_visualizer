@@ -7,7 +7,7 @@ canvas.id = "cvs";
 const context = canvas.getContext('2d');
 let setT = false;
 let setS = false;
-let startPos, targetPos;
+export let startPos, targetPos;
 let targetPlaced = false;
 let startPlaced = false;
 let interv;
@@ -36,7 +36,7 @@ function initialize() {
         grid[i] = new Array(m);
         for(let j = 0; j < m; j++){
             grid[i][j] = 0;
-            colorCell(i, j, false);
+            colorCell(i, j, "#cbcbcb", "#cbcbcb" ,false);
         }
     }
     targetPlaced = false;
@@ -60,7 +60,9 @@ function resetGrid() {
                 onesInRow = 3;
             }
             grid[i][j] = v;
-            colorCell(i,j, false);
+            let vv = grid[i][j];
+            let color = (vv == 0 ? "#cbcbcb" : (vv == 1 ? "#000000" : (vv == 2 ? "#4dff7d" : (vv == 3 ? "#ca33ff" : "#fac222"))));
+            colorCell(i,j,color,color,false);
         }
     }
     for(let j = 0; j < m; j++){
@@ -75,7 +77,9 @@ function resetGrid() {
                 onesInRow = 3;
             }
             grid[i][j]= v;
-            colorCell(i,j,false);
+            let vv = grid[i][j];
+            let color = (vv == 0 ? "#cbcbcb" : (vv == 1 ? "#000000" : (vv == 2 ? "#4dff7d" : (vv == 3 ? "#ca33ff" : "#fac222"))));
+            colorCell(i,j,color,color,false);
         }
     }
     targetPlaced = false;
@@ -165,15 +169,17 @@ function getPosClick(position) {
     }else {
         grid[i][j] = 1 - grid[i][j];
     }
-    colorCell(i, j, false);
+    let v = grid[i][j];
+    let color = (v == 0 ? "#cbcbcb" : (v == 1 ? "#000000" : (v == 2 ? "#4dff7d" : (v == 3 ? "#ca33ff" : "#fac222"))));
+    colorCell(i, j, color, color, false);
 }
-export function colorCell(i, j, delayed) {
+export function colorCell(i, j, color, colorstep, delayed) {
     if(delayed){
-        colorQueue.push({x: j, y: i});
-        colorQueue.push({x: j, y: i});
+        colorQueue.push({x: j, y: i, color: color});
+        colorQueue.push({x: j, y: i, color: colorstep});
         let iteration = 0;
         if(!interv)
-            interv = setInterval(() => { colorDelay(iteration++) }, 25);
+            interv = setInterval(() => { colorDelay(iteration++) }, 40);
     }else{
         let v = grid[i][j];
         let color = (v == 0 ? "#cbcbcb" : (v == 1 ? "#000000" : (v == 2 ? "#4dff7d" : (v == 3 ? "#ca33ff" : "#fac222"))));
@@ -185,20 +191,17 @@ export function colorCell(i, j, delayed) {
 function clearFilled() {
     for(let i = 0; i < n; i++){
         for(let j = 0; j < m; j++){
-            grid[i][j] = (grid[i][j] == 4 ? 0 : grid[i][j]);
-            colorCell(i,j,false);
+            grid[i][j] = ((grid[i][j] == 4 || grid[i][j]==5) ? 0 : grid[i][j]);
+            colorCell(i,j,"#cbcbcb","#cbcbcb",false);
         }
     }
 }
-function colorDelay(iteration) {
+function colorDelay() {
     if(colorQueue.length > 0){
         let newPos = colorQueue.shift();
         let newI = newPos.y;
         let newJ = newPos.x;
-        let v = grid[newI][newJ];
-        let color = (v == 0 ? "#cbcbcb" : (v == 1 ? "#000000" : (v == 2 ? "#4dff7d" : (v == 3 ? "#ca33ff" : "#fac222"))));
-        if(iteration%2 == 0)
-            color = "#8e7120";
+        let color = newPos.color;
         context.beginPath();
         context.fillStyle = color;
         context.fillRect(newJ * boxWidth, newI * boxHeight, boxWidth-1, boxHeight-1);
